@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试题</title>
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">普通告警</label>
+                <div class="col-sm-4">
+                    <input type="text" data-titleid="2" class="form-control input-sm m-t-15 addtableRowInput" value="1000" />
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" data-titleid="2" class="form-control input-sm m-t-15 addtableRowInput" value="1000" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">重要告警</label>
+                <div class="col-sm-4">
+                    <input type="text" data-titleid="3" class="form-control input-sm m-t-15 addtableRowInput" value="2000" />
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" data-titleid="3"  class="form-control input-sm m-t-15 addtableRowInput" value="2000" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">紧急告警</label>
+                <div class="col-sm-4">
+                    <input type="text" data-titleid="4" class="form-control input-sm m-t-15 addtableRowInput" value="3000" />
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" data-titleid="4" class="form-control input-sm m-t-15 addtableRowInput" value="3000" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">智能告警</label>
+                <div class="col-sm-4">
+                    <input type="text" data-titleid="1" class="form-control input-sm m-t-15 addtableRowInput" value="" />
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" data-titleid="1" class="form-control input-sm m-t-15 addtableRowInput" value="" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">阈值开启</label>
+                <div class="col-sm-4">
+                    <label class="control-label cursor" for="lowCheckbox">低阈值</label>
+                    <input type="checkbox" id="lowCheckbox" class="cursor" data-check="0" style="position: relative;top:3px;" />
+                </div>
+                <div class="col-sm-4">
+                    <label class="control-label cursor" for="highCheckbox">高阈值</label>
+                    <input type="checkbox" id="highCheckbox" class="cursor" data-check="0" style="position: relative;top:3px;" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">全局设置</label>
+                <div class="col-sm-9">
+                    <input type="checkbox" class="Globcheckbox cursor" data-check="0" style="margin-top: 22px;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="js/jQuery/jquery.min.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script>
+    function code(){
+        /*
+         * 第一题
+         */
+        function make(num){
+            return function (){
+                return num;
+            }
+        }
+        var arr = [make(0),make(1),make(2)];
+        console.log(arr[0]());//0
+        console.log(arr[1]());//1
+        console.log(arr[2]());//2
+        /*
+         * 第二题
+         *
+         */
+        var name = 'global';
+        function A(name){
+            console.log(name);
+            this.name = name;
+            var name = '1';
+        }
+        A.prototype.name = '2';
+        var a = new A('3');
+        console.log(a.name);
+        delete a.name;
+        console.log(a.name);
+        /*
+         * 第三题 此题特别重要特别变态！！！！！！
+         * 切记
+         *
+         */
+        function fun(n,o){
+            console.log(o);
+            return {
+                fun: function (m) {
+                    return fun(m,n)
+                }
+            }
+        }
+        var a = fun(0);
+        a.fun(1);
+        a.fun(2);
+        var b = fun(0).fun(1).fun(2).fun(3);
+        var c = fun(0).fun(1);
+        c.fun(2);
+        c.fun(3);
+        /*
+         * 第四题
+         */
+        var test = "aaa";
+        function doSomething(){
+            console.log(test);
+            var test = "bbb";
+            alert("test");
+        }
+        doSomething();
+        console.log(test);
+        /*=============================
+         * 第五题
+         * 详细解析：由于变量提长的原因 些代码等价于
+         *  var userNmae;
+         *  if(!("userName" in window)){
+         *    userName = "zhengzheng.xz"
+         *    }
+         *    console.log(userName)
+         * 而第一句代码 相当于是全局变量 故其相当于给window添加咯一个userName属性
+         * 故 “userName" in window 运行结果为true 表示在winow 这个对象中是能够找
+         * 到userName 这个属性的
+         * 对"userName" in window 这个结果取非 故if括号里运行结果为false
+         * 则 userName 声明未赋值 由于js运行规则 声明未赋值的变量默认赋值为undefined
+         * 故console.log(userName)等价于console.log(window.userName)
+         * 故运行结果为undefined
+         *
+         =================================*/
+        if(!("userName" in window)){
+            var userName = "zhengzheng.xz";
+        }
+        console.log(userName);//undefined
+        /*
+         * 第六题
+         *
+         *
+         */
+        var obj = {
+            user:"zhengzheng.xz",
+            getName:function(){
+                return this.user;
+            }
+        };
+        var getNameFn = obj.getName;
+        console.log(getNameFn());
+        console.log(obj.getName());
+        /*
+         * 闭包的精典应用场景
+         *
+         *
+         */
+//    for(var i = 0,els = document.getElementsByClassName("element");i<els.length;i++){
+//        (function(index){
+//            els[index].onclick = function(){
+//                console.log(index);
+//            }
+//        })(i);
+//    }
+    }
+
+    //1、请写出弹出值并解释为什么 5分
+    +function(){
+        alert(a)
+        a();
+        var a = function(){
+            console.log(1);
+        }
+        function a(){
+            console.log(2);
+        }
+        alert(a)
+        a();
+        var c = d = a;
+    }();
+    alert(d);
+    alert(c);
+
+    // 2、请写出如下输出值，并写出把注释掉的代码取消注释的值，并解释为什么 8分
+    this.a = 20;
+    var test = {
+        a:40,
+        ini:()=>{
+                console.log(this.a);
+                function go(){
+//                    this.a = 60;
+                    console.log(this.a);
+                }
+               go.prototype.a = 50;
+               return go;
+            }
+    };
+//    var p = test.init();
+//    p();
+      new(test.init())();
+    //答：
+    //去掉注释后的答案
+
+    // 3：请写出如下点击li的输出值，并用三种办法正确输出li里的数字 12分
+
+//    <ul>
+//    <li>1</li>
+//    <li>2</li>
+//    <li>3</li>
+//    <li>4</li>
+//    <li>5</li>
+//    <li>6</li>
+//    </ul>
+
+    var list_li = document.getElementsByTagName("li");
+    for(var i = 0;i<list_li.length;i++){
+        list_li[i].onclick = function(){
+            console.log(i);
+        }
+    }
+    // 4、写出输出值并解释为什么 5分
+    function test(m){
+        m = {v:5}
+    }
+    var m = {k:30};
+    test(m);
+    alert(m.v);
+    /*
+     * 5、请在下面写出javascript面向对象编程的混合式继承。交写出ES6版本的继承。
+     * 要求：汽车是父类，Cruze是子类。父类有颜色 ，价格属性 ，有售卖的方法。Cruze子类
+     * 实现父类颜色是红色，价格是140000，售卖方法实现输出如下语句：将红色的Cruze买给咯
+     * 小王的价格是14万。20分
+     */
+
+
+    /*
+     * 6、 请用一句话算出0-100之间学生的等级，如90-100输出为1等生，80-90为2等生以此类推。
+     * 不允许使用if switch 等 10分
+     */
+
+
+
+    /*
+     * 7、请你写出如何利用ECMAScript6/7(小demo)优化多步异步嵌套的代码？
+     */
+
+    /*
+     * 8、请问点击 <button id = "test" ></button>会有反应么？为什么？能解决么？
+     */
+    $("#test").click(function(argument){
+        console.log(1);
+    });
+    setTimeout(function(){
+        console.log(2)
+    },0);
+    while (true){
+        console.log(3);
+    }
+    //9、请用一句话遍历变量a。（禁止用for已知var a = "abc")(10分）
+
+    //10、请写出如下输出值，并解释为什么？ 12分
+    var s = [];
+    var arr = s;
+    for(var i =0 i < 3;i++){
+        var pusher = {
+            value:"item"+i
+        },tmp;
+        if(i != 2){
+            tmp = [];
+            pusher.children = tmp;
+        }
+        arr.push(pusher);
+        arr = tmp;
+    }
+    console.log(s[0]);
+    /*
+     * 附加题 请描述你理解的函数式编程，并书写如下代码结果。如何
+     * 将函数式编辑应用到你的项目当中呢？10分
+     */
+    var Container = function(x){
+        this._value = x;
+    }
+    Container.of = x => new Container(x);
+    Container.prototype.map = function(f){
+        return Container.of(f(this._value))
+    }
+    Container.of(3)
+            .map(x => x+1)
+            .map(x => 'Result is' + x);
+
+
+</script>
