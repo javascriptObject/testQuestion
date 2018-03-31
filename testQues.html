@@ -194,7 +194,20 @@
     }();
     alert(d);
     alert(c);
-
+  /*
+     * 解析：表达式 (function(){}()); (function(){})(); +function(){}();-function(){}();!function(){}();~function(){}(); 此函数表达式会返回一个结果
+     * 函数提升：test() function test(){};与function test(){} test()；一样执行
+     * 变量提升：
+     * if(false){
+     *    var a = 1;
+     *      }
+     *      console.log(a);//undefind (not a is not defined);
+     * 此题是考验一个前端是不是入门的一个基础题
+     * 函数提升的优先级要比变量要高
+     *
+     *
+     *
+     */
     // 2、请写出如下输出值，并写出把注释掉的代码取消注释的值，并解释为什么 8分
     this.a = 20;
     var test = {
